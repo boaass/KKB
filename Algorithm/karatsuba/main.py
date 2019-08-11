@@ -1,7 +1,17 @@
 # -*- coding:utf-8 -*-
 
+# karatsuba 大数相乘算法
+# 时间复杂度 3nlog3
+
+
+class Counter(object):
+    count = 0
+
 
 def karatsuba(num1, num2):
+    Counter.count += 1
+    print Counter.count
+
     # 求n
     digits1 = len(str(int(num1)))
     digits2 = len(str(int(num2)))
@@ -29,6 +39,8 @@ def karatsuba(num1, num2):
 
 
 if __name__ == '__main__':
-    num1 = 1234
-    num2 = 5678
+    # num1 = 1234
+    # num2 = 5678
+    num1 = 123456789
+    num2 = 10
     print karatsuba(num1, num2)
