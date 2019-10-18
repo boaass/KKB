@@ -55,6 +55,7 @@ def sobelY(img):
 def medianblur(img):
     return cv2.medianBlur(img, 7)
 
+
 ## 二阶导
 # Gaussian kernel
 def gaussianKernel(img):
@@ -76,6 +77,35 @@ def laplacian(img):
                        [0, 1, 0]])
     lap_img = cv2.filter2D(img, -1, kernel)
     return lap_img
+
+
+def harrisCorner():
+    # harris corner
+    # 突出角点
+
+    img = imreadModes()
+    img_gray = np.float32(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
+    img_harris = cv2.cornerHarris(img_gray, 2, 3, 0.03)
+
+    # 放大角点
+    img_harris = cv2.dilate(img_harris, None)
+
+    threshold = np.max(img_harris) * 0.05
+    img[img_harris > threshold] = [0, 0, 255]
+
+    return img
+
+
+def sift(img):
+    # SIFT
+    sift = cv2.xfeatures2d.SIFT_create()
+    kp = sift.detect(img, None)
+    print(len(kp))
+    kp, des = sift.compute(img, kp)
+    print(des.shape)
+    img_shift = cv2.drawKeypoints(img, kp, outImage=np.array([]), flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+    return img_shift
 
 
 if __name__ == '__main__':
@@ -105,6 +135,14 @@ if __name__ == '__main__':
     med_img = medianblur(img)
     # cv2.imshow('test', img)
     # imgShow('medianblure', med_img)
+
+    # harris corner
+    har_img = harrisCorner()
+    # imgShow('harris', har_img)
+
+    # SIFT
+    sift_img = sift(img)
+    imgShow('sift', sift_img)
 
 
 
