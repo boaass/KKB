@@ -178,6 +178,14 @@ def RANSAC():
             break
 
         # 画图展示
+        y_line = maybemodel_a * x_line + maybemodel_b
+        ax.plot(x_line, y_line, c='r')
+        plt.title(str(iterations) + ' iterations', fontsize='xx-large')
+        ax.scatter(np.array(data_X), np.array(data_Y))
+        plt.pause(2)
+        ax.cla()
+
+        iterations += 1
 
 
 if __name__ == '__main__':
