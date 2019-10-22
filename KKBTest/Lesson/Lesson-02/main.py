@@ -68,7 +68,6 @@ def arrForMedian(scr, i, j, space, channel_id=-1):
            j + space + 1 if (j + space + 1) <= w else w, channel_id]
 
 
-
 def addNoise(img):
     h, w = img.shape[:2]
     # new_img = img.copy()
@@ -77,16 +76,63 @@ def addNoise(img):
     for i in range(0, noisecount):
         x = int(np.random.random() * (h-1))
         y = int(np.random.random() * (w-1))
-        new_img[x, y] = (255, 255, 255)
+        if len(img.shape) == 3:
+            new_img[x, y] = (255, 255, 255)
+        elif len(img.shape) == 2:
+            new_img[x, y] = 255
 
     return new_img
 
 
+def RANSAC():
+    # Given:
+    #     data – a set of observed data points
+    #     model – a model that can be fitted to data points
+    #     n – the minimum number of data values required to fit the model
+    #     k – the maximum number of iterations allowed in the algorithm
+    #     t – a threshold value for determining when a data point fits a model
+    #     d – the number of close data values required to assert that a model fits well to data
+    #
+    # Return:
+    #     bestfit – model parameters which best fit the data (or nul if no good model is found)
+    #
+    iterations = 0
+    # bestfit = nul
+    # besterr = something really large
+    # while iterations < k {
+    #     maybeinliers = n randomly selected values from data
+    #     maybemodel = model parameters fitted to maybeinliers
+    #     alsoinliers = empty set
+    #     for every point in data not in maybeinliers {
+    #         if point fits maybemodel with an error smaller than t
+    #              add point to alsoinliers
+    #     }
+    #     if the number of elements in alsoinliers is > d {
+    #         % this implies that we may have found a good model
+    #         % now test how good it is
+    #         bettermodel = model parameters fitted to all points in maybeinliers and alsoinliers
+    #         thiserr = a measure of how well model fits these points
+    #         if thiserr < besterr {
+    #             bestfit = bettermodel
+    #             besterr = thiserr
+    #         }
+    #     }
+    #     increment iterations
+    # }
+    # return bestfit
+
+
 if __name__ == '__main__':
+
+    # 测试中值滤波
     img = imreadModes()
+    # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)   # 测试灰度图
     noise_img = addNoise(img)   # 生成噪点图
-    # noise_img = cv2.cvtColor(noise_img, cv2.COLOR_BGR2GRAY)     # 测试灰度图
     med_img = customMedianBlur(noise_img, 3)
-    cv2.imshow('order_test', noise_img)
+    cv2.imshow('noise_test', noise_img)
     cv2.imshow('m_test', cv2.medianBlur(noise_img, 3))
     imgShow(med_img)
+
+    # RANSAC 伪代码
+    RANSAC()
+
