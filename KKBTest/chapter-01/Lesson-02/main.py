@@ -178,6 +178,7 @@ def RANSAC():
             break
 
         # 画图展示
+        x_line = np.linspace(np.min(np.array(data_X)), np.max(np.array(data_X)), 1000)
         y_line = maybemodel_a * x_line + maybemodel_b
         ax.plot(x_line, y_line, c='r')
         plt.title(str(iterations) + ' iterations', fontsize='xx-large')
