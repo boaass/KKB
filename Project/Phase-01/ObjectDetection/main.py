@@ -62,7 +62,12 @@ def drawMatches(imgA, imgB, kpsA, kpsB, M, matches):
 
     pts = np.float32([[0, 0], [0, hA - 1], [wA - 1, hA - 1], [wA - 1, 0]]).reshape(-1, 1, 2)
     dst = cv2.perspectiveTransform(pts, M)
-    vis[0:hB, wA:] = cv2.polylines(imgB, [np.int32(dst)], True, (0, 0, 255), 10, cv2.LINE_AA)
+    x_max, y_max = np.float32(dst).reshape(4, 2).max(axis=0)
+    x_min, y_min = np.float32(dst).reshape(4, 2).min(axis=0)
+
+    cv2.rectangle(imgB, (x_min, y_min), (x_max, y_max), (0, 0, 255), 5, cv2.LINE_AA)
+    vis[0:hB, wA:] = imgB
+    # vis[0:hB, wA:] = cv2.polylines(imgB, [np.int32(dst)], True, (0, 0, 255), 10, cv2.LINE_AA)
 
     matchesMask = mask.ravel().tolist()
     draw_params = dict(matchColor=(0, 255, 0),  # draw matches in green color
